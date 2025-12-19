@@ -23,5 +23,5 @@ jobs:
 
       - name: Prisma migrate deploy
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_POOLER_URL}}
         run: npx prisma migrate deploy

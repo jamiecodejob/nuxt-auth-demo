@@ -2,19 +2,30 @@
 import bcrypt from 'bcryptjs'
 
 export default defineEventHandler(async (event) => {
-  const { email, password, name } = await readBody(event)
+  const body = await readBody(event)
+  const { email, password } = body
 
-  const exists = await prisma.user.findUnique({ where: { email } })
-  if (exists) throw createError({ statusCode: 400, message: 'Email 已被註冊' })
+  // 1. 先檢查使用者
+  const existingUser = await prisma.user.findUnique({
+    where: { email }
+  })
 
+  if (existingUser) {
+    // 這裡定義彈窗會顯示的文字
+    throw createError({
+      statusCode: 400,
+      statusMessage: '此 Email 已經註冊過囉，請直接登入！'
+    })
+  }
+
+  // 2. 建立新使用者
   const hashedPassword = await bcrypt.hash(password, 10)
-
   const user = await prisma.user.create({
     data: {
       email,
-      name,
       password: hashedPassword,
-      provider: 'email'
+      provider: 'email',
+      name: email.split('@')[0]
     }
   })
 

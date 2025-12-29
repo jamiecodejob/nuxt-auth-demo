@@ -1,9 +1,25 @@
 <script setup lang="ts">
+import type { FetchError } from 'ofetch'
+
 const email = ref('')
 const password = ref('')
 const { fetch: fetchSession } = useUserSession()
 
-// 註冊邏輯
+const handleLogin = async () => {
+  try {
+    await $fetch('/api/auth/login', {
+      method: 'POST',
+      body: { email: email.value, password: password.value }
+    })
+    await fetchSession()
+    await navigateTo('/')
+  } catch (err) {
+    // 使用 Type Guard 確保 err 是 FetchError
+    const fetchError = err as FetchError<{ statusMessage: string }>
+    alert(fetchError.data?.statusMessage || '登入失敗')
+  }
+}
+
 const handleRegister = async () => {
   try {
     await $fetch('/api/auth/register', {
@@ -12,22 +28,10 @@ const handleRegister = async () => {
     })
     await fetchSession()
     await navigateTo('/')
-  } catch (err: any) {
-    alert(err.statusMessage || '註冊失敗')
-  }
-}
-
-// 登入邏輯 (你原本寫的)
-const handleLogin = async () => {
-  try {
-    await $fetch('/api/api/auth/login', { 
-      method: 'POST', 
-      body: { email: email.value, password: password.value } 
-    })
-    await fetchSession()
-    await navigateTo('/')
   } catch (err) {
-    alert('登入失敗')
+    // 另一種寫法：先斷言再提取
+    const errorData = (err as FetchError).data as { statusMessage?: string }
+    alert(errorData?.statusMessage || '註冊失敗')
   }
 }
 </script>

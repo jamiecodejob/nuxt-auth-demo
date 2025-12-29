@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['nuxt-auth-utils'],
+  modules: ['nuxt-auth-utils', '@nuxtjs/tailwindcss'],
   runtimeConfig: {
     // Session 加密密鑰 (必填，生產環境請設長一點)
     session: {

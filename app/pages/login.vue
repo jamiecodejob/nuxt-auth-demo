@@ -6,33 +6,34 @@ const password = ref('')
 const { fetch: fetchSession } = useUserSession()
 
 const handleLogin = async () => {
-  try {
-    await $fetch('/api/auth/login', {
-      method: 'POST',
-      body: { email: email.value, password: password.value }
-    })
+  await $fetch('/api/auth/login', {
+    method: 'POST',
+    body: { email: email.value, password: password.value }
+  })
+  .then(async () => {
     await fetchSession()
     await navigateTo('/')
-  } catch (err) {
-    // 使用 Type Guard 確保 err 是 FetchError
-    const fetchError = err as FetchError<{ statusMessage: string }>
-    alert(fetchError.data?.statusMessage || '登入失敗')
-  }
+  })
+  .catch((err: FetchError<{ statusMessage: string }>) => {
+    alert(err.data?.statusMessage || '登入失敗')
+  })
 }
 
 const handleRegister = async () => {
-  try {
-    await $fetch('/api/auth/register', {
-      method: 'POST',
-      body: { email: email.value, password: password.value }
-    })
+  // 1. 執行請求
+  await $fetch('/api/auth/register', {
+    method: 'POST',
+    body: { email: email.value, password: password.value }
+  })
+  .then(async () => {
+    // 2. 這裡處理成功：刷新 Session 並跳轉
     await fetchSession()
-    await navigateTo('/')
-  } catch (err) {
-    // 另一種寫法：先斷言再提取
-    const errorData = (err as FetchError).data as { statusMessage?: string }
-    alert(errorData?.statusMessage || '註冊失敗')
-  }
+    return navigateTo('/')
+  })
+  .catch((err: FetchError<{ statusMessage: string }>) => {
+    // 3. 這裡處理失敗：顯示後端傳回的錯誤訊息
+    alert(err.data?.statusMessage || '註冊失敗')
+  })
 }
 </script>
 

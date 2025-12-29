@@ -19,6 +19,8 @@
     "@nuxt/test-utils": "^3.21.0",
     "@prisma/adapter-pg": "^7.2.0",
     "@prisma/client": "^7.2.0",
+    "@types/bcryptjs": "^2.4.6",
+    "bcryptjs": "^3.0.3",
     "nuxt": "^4.2.1",
     "nuxt-auth-utils": "^0.5.26",
     "pg": "^8.16.3",

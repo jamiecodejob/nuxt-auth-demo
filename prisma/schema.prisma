@@ -7,9 +7,12 @@ datasource db {
 }
 
 model User {
-  id           Int      @id @default(autoincrement())
-  email        String   @unique
-  passwordHash String
-  name         String?
-  createdAt    DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String?  // Email 登入才需要，OAuth 登入者為 null
+  name      String?
+  avatar    String?
+  provider  String?  // 紀錄是用 google, github, facebook 還是 email
+  createdAt DateTime @default(now())
 }
+

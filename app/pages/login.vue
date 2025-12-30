@@ -39,8 +39,8 @@ const handleRegister = async () => {
 
 <template>
   <div class="p-8 w-[500px]">
-    <input v-model="email" type="email" placeholder="Email" class="w-full border p-2 block mb-2" />
-    <input v-model="password" type="password" placeholder="密碼" class="w-full border p-2 block mb-4" />
+    <input v-model="email" type="email" placeholder="Email" class="w-full outline border p-2 block mb-2" />
+    <input v-model="password" type="password" placeholder="密碼" class="w-full outline border p-2 block mb-4" />
     
     <div class="flex justify-between w-full">
       <button @click="handleLogin" class="bg-blue-500 text-white p-2">登入</button>
@@ -48,3 +48,8 @@ const handleRegister = async () => {
     </div>
   </div>
 </template>
+<style scoped>
+  .outline{
+    outline: none;
+  }
+</style>

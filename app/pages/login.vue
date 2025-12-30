@@ -38,11 +38,11 @@ const handleRegister = async () => {
 </script>
 
 <template>
-  <div class="p-8">
-    <input v-model="email" type="email" placeholder="Email" class="border p-2 block mb-2" />
-    <input v-model="password" type="password" placeholder="密碼" class="border p-2 block mb-4" />
+  <div class="p-8 w-[500px]">
+    <input v-model="email" type="email" placeholder="Email" class="w-full border p-2 block mb-2" />
+    <input v-model="password" type="password" placeholder="密碼" class="w-full border p-2 block mb-4" />
     
-    <div class="flex gap-4">
+    <div class="flex justify-between w-full">
       <button @click="handleLogin" class="bg-blue-500 text-white p-2">登入</button>
       <button @click="handleRegister" class="bg-green-500 text-white p-2">註冊新帳號</button>
     </div>

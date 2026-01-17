@@ -1,28 +1,28 @@
-name: Prisma Migrate
+name: Prisma Migrate # 這是這個工作流程的名字，會顯示在 GitHub Actions 頁面
 
 on:
   push:
     branches:
-      - main
+      - main # 規定只有在程式碼推送到 "main" 分支時才執行（防止開發中的測試影響正式資料庫）
 
 jobs:
   migrate:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+    runs-on: ubuntu-latest # 在 GitHub 提供的虛擬主機 (Linux Ubuntu) 上執行
+    timeout-minutes: 10 # 防止因為意外卡住導致 GitHub 點數被扣光，超過 10 分鐘自動停止
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4 # 讓虛擬機下載你的專案程式碼，否則它沒辦法讀到 prisma 資料夾
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 20 # 安裝與你本地端一致的 Node.js 版本，確保指令跑起來沒問題
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci # 注意！這裡用的是 "ci" 而不是 "install"
 
       - name: Prisma migrate deploy
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_POOLER_URL}}
+          DATABASE_URL: ${{ secrets.DATABASE_POOLER_URL}} # 從 GitHub Secrets 讀取加密的連線字串
         run: npx prisma migrate deploy
